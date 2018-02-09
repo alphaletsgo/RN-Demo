@@ -1,0 +1,99 @@
+<!-- 本demo主要讨论组件的生命周期 -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>组件的生命周期</title>
+    <script src="https://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
+    <script src="https://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script type="text/babel">
+  /*
+  React生命周期主要包含4部分
+  */
+    var LifeComponent = React.createClass({
+      /*
+      创建阶段：
+        流程：getDefaultProps
+      */
+      getDefaultProps:function() {
+        //在创建类的时候被调用，设置this.props的默认值
+        console.log("getDefaultProps");
+        return {};
+      },
+      /*
+      实例化阶段
+        流程：getInitialState
+            componentWillMount
+            render
+            componentDidMount
+      */
+      getInitialState:function() {
+        //设置state的默认值
+        console.log("getInitialState");
+        return null;
+      },
+      componentWillMount:function() {
+        console.log("componentWillMount");
+      },
+      render:function() {
+        console.log("render");
+        return (
+          <div>
+            <p>Hello</p>
+          </div>
+        );
+      },
+      componentDidMount:function() {
+        //在render方法之后被调用
+        //在该方法中，React会使用render方法返回的虚拟DOM对象创建真实的DOM结构
+        //可以在这个方法中读取DOM节点
+        console.log("componentDidMount");
+      },
+      /*
+      更新阶段
+        流程：componentWillReceiveProps
+             shouldComponentUpdate 判断是否更新，返回false表示不更新
+             componentWillUpdate
+             render
+             componetDidUpdate
+      */
+      componentWillReceiveProps:function() {
+        console.log("componentWillReceiveProps");
+      },
+      shouldComponentUpdate:function() {
+        console.log("shouldComponentUpdate");
+        return true;
+      },
+      componentWillUpdate:function() {
+        console.log("componentWillUpdate");
+      },
+      componentDidUpdate:function() {
+        console.log("componentDidUpdate");
+      },
+      /*
+      销毁阶段
+      */
+      componentWillUnmount:function() {
+        console.log("componentWillUnmount");
+      }
+
+    });
+    //渲染
+    ReactDOM.render(
+      <LifeComponent />,
+      document.getElementById('root')
+    );
+    //重新更新
+    ReactDOM.render(
+      <LifeComponent />,
+      document.getElementById("root")
+    );
+    //销毁节点
+    ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+  </script>
+</html>

@@ -1,0 +1,171 @@
+<!-- 该demo里面包含以下内容：
+1、自定义组件
+2、props 参数传递
+3、复合组件 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Component</title>
+    <script src="https://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
+	<script src="https://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+	<script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
+  <style>
+    .pStyle{
+      size:16
+    }
+  </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script type="text/babel">
+    //自定义组件
+    var HelloReact = React.createClass({
+      render:function() {
+      return <h1>Hello React</h1>;
+      }
+    });
+    ReactDOM.render(
+      <HelloReact />,
+      document.getElementById("root")
+    );
+    //带参数
+    var Hello = React.createClass(
+      {
+        render:function (){
+          return <h1>Hello {this.props.name} by {this.props.author}</h1>;
+        }
+      }
+    );
+    ReactDOM.render(
+      <div>
+        <div>
+          <Hello name="Levi" author="He" />
+        </div>
+      </div>,
+
+      document.getElementById('root')
+    );
+    //复合组件
+    var Name = React.createClass(
+      {
+        render:function() {
+          return <h1> {this.props.name}</h1>;
+        }
+      }
+    );
+    var Link = React.createClass({
+      render:function(){
+        return <h2>{this.props.link}</h2>
+      }
+    });
+
+    var Title = React.createClass({
+      render:function(){
+        return (
+          <div>
+            <Name name={this.props.name} />
+            <Link link={this.props.link} />
+          </div>
+        );
+      }
+    });
+    ReactDOM.render(
+      <Title name="ISIF" link="http://isif.cn"/>,
+      document.getElementById('root')
+    );
+
+    /*
+    设置组件的样式，学习三种设置方式
+    1、内联样式
+    2、对象样式
+    2、选择器样式
+
+    注意：react中设置样式的书写形式与html5有所不同：
+    1、html5以“;”结尾   react以“,”结尾
+    2、html5中key、value都不加引号  React中属于JavaScript对象，key的名字不能有“-”，使用驼峰命名，如果value是字符串需加引号
+    3、html5中value是数值时需加单位   React中不需要带单位
+
+    我们定义一个组件，同时应用这三种方式来设置样式
+    需求：定义一个组件，分为上下两行来显示内容
+    <div> 使用内联样式——设置背景、边框大小、边框颜色
+      <h1></h1>使用对象样式——设置背景颜色、字体颜色
+      <p></p>使用选择器样式——设置字体大小
+    </div>
+    注意：在React中如果需要使用选择器样式的话，我们不能使用class而是使用className，class是React的关键字；
+    类似情况：使用htmlFor来替换for
+    */
+
+  var hStyle = {
+      backgroundColor:"yellow",
+      color:"green"
+  };
+    var StyleDemo = React.createClass({
+      render:function(){
+        return (
+          <div style={{backgroundColor:"red", borderWidth:5, borderColor:"black", borderStyle:"solid"}}>
+            <h1 style={hStyle}>{this.props.name}</h1>
+            <p className="pStyle">{this.props.link}</p>
+          </div>
+        );
+      }
+    });
+    ReactDOM.render(
+      <StyleDemo name="Hello Link" link="http://isif.cn" />,
+      document.getElementById("root")
+    );
+
+/*
+定义一个列表组件
+1、使用this.props.children来获取子节点中的数据
+2、使用React.Children.map()方法来遍历
+*/
+var ListComponent = React.createClass({
+  render:function() {
+    return (
+      <ul>
+      {
+        React.Children.map(this.props.children,function(child){
+          return <li>{child}</li>;
+        })
+      }
+      </ul>
+    );
+  }
+});
+ReactDOM.render(
+  (
+    <ListComponent>
+      <h4>Apple</h4>
+      <h4>Banana</h4>
+      <h4>Orenge</h4>
+    </ListComponent>
+  ),
+  document.getElementById("root")
+);
+  /*
+  属性以及属性的默认值
+  */
+  var PropComponent = React.createClass({
+    propTypes:{//propTypes是组件内的一个属性
+      //验证title的类型必须是string
+      title:React.PropTypes.string.isRequired
+    },
+    getDefaultProps:function(){
+      return {
+        title:"This is title!"
+      };
+    },
+    render:function(){
+      return <h2>{this.props.title}</h2>
+    }
+  });
+
+  ReactDOM.render(
+    <PropComponent/>,
+    document.getElementById("root")
+  );
+    </script>
+</html>
